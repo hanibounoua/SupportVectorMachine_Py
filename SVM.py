@@ -15,6 +15,21 @@ class SVMc:
         self.b = None
 
     def fit(self, X, y):
-        pass
 
-    self predict()
+        n_sample, n_feature = X.shape
+        y_ = np.where(y == 0, -1, 1) # Here I ve used the same nomencalture as I found.
+        # On tutorial, So this variable is used to define positive and negative class.
+        self.omega = np.zeros(n_feature)
+        self.b = 0
+
+        for _ in range(self.n_iter):
+            for ind, x in enumerate(X):
+                if y_[ind]*(np.dot(self.omega, x) + b) >= 0:
+                    self.omega += self.lr * self.Lambda * self.omega
+                else:
+                    self.omega += self.lr * self.C * ((self.Lambda * self.omega) + y_[ind] * x)
+                    self.b += -self.C * y[ind]
+
+
+    def predict(self, X):
+        return np.where(np.signe(np.dot(self.omega, X) + self.b) > 0, 1, 0)
