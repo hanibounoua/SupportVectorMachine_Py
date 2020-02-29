@@ -1,7 +1,7 @@
 import numpy as np
 
 class SVMc:
-    def __init__(self, Lambda, C, kernel, learningRate = .001, n_iter = 1000):
+    def __init__(self, Lambda = .5, C = 1, kernel = 'leaner', learningRate = .001, n_iter = 1000):
 
         # Model's Hyper-Parameters:
         self.Lambda = Lambda # Ponderation Parameter for on the  Hinge Loss function
@@ -22,14 +22,17 @@ class SVMc:
         self.omega = np.zeros(n_feature)
         self.b = 0
 
+        # Gradian Descent ---------------------------------------------------------
+
         for _ in range(self.n_iter):
             for ind, x in enumerate(X):
-                if y_[ind]*(np.dot(self.omega, x) + b) >= 0:
-                    self.omega += self.lr * self.Lambda * self.omega
+
+                if y_[ind]*(np.dot(self.omega, x) - self.b) >= 1:
+                    self.omega -= self.lr * 2 * self.Lambda * self.omega
                 else:
-                    self.omega += self.lr * self.C * ((self.Lambda * self.omega) + y_[ind] * x)
-                    self.b += -self.C * y[ind]
+                    self.omega -= self.lr * ((2 * self.Lambda * self.omega) - self.C * np.dot(x, y_[ind]))
+                    self.b -= self.lr * self.C * y[ind]
 
 
     def predict(self, X):
-        return np.where(np.signe(np.dot(self.omega, X) + self.b) > 0, 1, 0)
+        return np.where(np.signe(np.dot(self.omega, X) - self.b) > 0, 1, 0)
