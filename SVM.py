@@ -35,6 +35,25 @@ class SVMc:
                     self.omega -= self.lr * ((2 * self.Lambda * self.omega) - self.C * np.dot(x, y_[ind]))
                     self.b -= self.lr * self.C * y[ind]
 
+    def fit_update(self, X, y):
+
+        n_sample, n_feature = X.shape
+        y_ = np.where(y <= 0, -1, 1)
+
+        # Gradian Descent ---------------------------------------------------------
+
+        for _ in range(self.n_iter):
+            for ind, x in enumerate(X):
+
+                if y_[ind]*(np.dot(self.omega, x) - self.b) >= 1:
+                    self.omega -= self.lr * 2 * self.Lambda * self.omega
+                else:
+                    self.omega -= self.lr * ((2 * self.Lambda * self.omega) - self.C * np.dot(x, y_[ind]))
+                    self.b -= self.lr * self.C * y[ind]
 
     def predict(self, X):
-        return np.where(np.signe(np.dot(self.omega, X) - self.b) > 0, 1, 0)
+        n_sample = X.shape[0]
+        y = np.zeros(n_sample)
+        for ind, x_i in enumerate(X):
+            y[ind] = np.where(np.sign(np.dot(self.omega, x_i) - self.b) > 0, 1, 0)
+        return y
