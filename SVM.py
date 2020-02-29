@@ -1,5 +1,7 @@
 import numpy as np
 
+
+
 class SVMc:
     def __init__(self, Lambda = .5, C = 1, kernel = 'leaner', learningRate = .001, n_iter = 1000):
 

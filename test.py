@@ -1,3 +1,5 @@
+# In this part i used script svm_test.py from: https://github.com/python-engineer/MLfromscratch
+
 import numpy as np
 from sklearn import datasets
 import matplotlib.pyplot as plt
@@ -11,7 +13,6 @@ clf.fit(X, y)
 
 print(clf.omega, clf.b)
 
-#predictions = clf.predict(X)
 
 
 def visualize_svm():
